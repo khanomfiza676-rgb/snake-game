@@ -83,3 +83,72 @@ void draw() {
     color(13);
     cout << "Controls: W A S D | X = Exit" << endl;
 }
+
+// ============================================
+// MOVEMENT AND GAME LOGIC MODULE
+// ============================================
+
+// Reads keyboard input and controls movement
+void input() {
+    if(_kbhit()) {
+        switch(_getch()) {
+            case 'a': if(dx!=1){dx=-1;dy=0;} break;
+            case 'd': if(dx!=-1){dx=1;dy=0;} break;
+            case 'w': if(dy!=1){dx=0;dy=-1;} break;
+            case 's': if(dy!=-1){dx=0;dy=1;} break;
+            case 'x': gameOver=true; break;
+        }
+    }
+}
+
+// Handles movement, collision, and food eating
+void logic() {
+    pair<int,int> head = snake.front();
+    head.first += dx;
+    head.second += dy;
+
+    if(head.first<0 || head.first>=width ||
+       head.second<0 || head.second>=height)
+        gameOver = true;
+
+    for(size_t i=0;i<snake.size();i++)
+        if(head==snake[i]) gameOver=true;
+
+    snake.insert(snake.begin(), head);
+
+    if(head.first==fruitX && head.second==fruitY) {
+        score += 10;
+        fruitX = rand()%width;
+        fruitY = rand()%height;
+    } else {
+        snake.pop_back();
+    }
+}
+
+// ============================================
+// MAIN FUNCTION
+// ============================================
+
+int main() {
+    setup();
+
+    HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
+    CONSOLE_CURSOR_INFO ci;
+    ci.dwSize = 100;
+    ci.bVisible = FALSE;
+    SetConsoleCursorInfo(h, &ci);
+
+    while(!gameOver) {
+        draw();      // Board module
+        input();     // Movement module
+        logic();     // Food + game logic module
+        Sleep(120);
+    }
+
+    color(12);
+    cout << "\\nGAME OVER! Final Score: " << score << endl;
+    color(7);
+
+    return 0;
+}
+
