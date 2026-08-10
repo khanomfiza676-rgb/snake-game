@@ -83,8 +83,6 @@ void draw() {
     color(13);
     cout << "Controls: W A S D | X = Exit" << endl;
 }
-
-// ============================================
 // MOVEMENT AND GAME LOGIC MODULE
 // ============================================
 
@@ -151,4 +149,3 @@ int main() {
 
     return 0;
 }
-
