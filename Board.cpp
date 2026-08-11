@@ -83,6 +83,26 @@ void draw() {
     color(13);
     cout << "Controls: W A S D | X = Exit" << endl;
 }
+
+// FOOD GENERATION MODULE
+// ============================================
+
+// Initializes the game and generates the first food
+void setup()
+{
+    gameOver = false;
+    x = width / 2;
+    y = height / 2;
+    dx = 1;
+    dy = 0;
+    score = 0;
+    snake.clear();
+    snake.push_back({x, y});
+
+    srand(time(0));
+    fruitX = rand() % width;
+    fruitY = rand() % height;
+}
 // MOVEMENT AND GAME LOGIC MODULE
 // ============================================
 
